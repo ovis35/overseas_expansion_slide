@@ -20,6 +20,8 @@ export default function PdfExport({ onClose }: PdfExportProps) {
           // 可選：等字型載入完再輸出，避免字型 fallback 造成版面跳動
           // await document.fonts?.ready;
 
+          const { scrollHeight, scrollWidth } = element;
+
           await html2pdf()
             .from(element)
             .set({
@@ -28,7 +30,9 @@ export default function PdfExport({ onClose }: PdfExportProps) {
               html2canvas: {
                 scale: 2,
                 useCORS: true,
-                backgroundColor: null
+                backgroundColor: null,
+                windowWidth: scrollWidth,
+                windowHeight: scrollHeight
               },
               pagebreak: {
                 mode: ['css', 'legacy'],
