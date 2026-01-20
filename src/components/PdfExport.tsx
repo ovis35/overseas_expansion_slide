@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import html2pdf from 'html2pdf.js';
 import { slides, totalSlides } from '../data/slides';
 import SlideRenderer from './SlideRenderer';
 
@@ -13,6 +12,12 @@ export default function PdfExport({ onClose }: PdfExportProps) {
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return;
+
+    const html2pdf = window.html2pdf;
+    if (!html2pdf) {
+      onClose();
+      return;
+    }
 
     const timer = window.setTimeout(() => {
       void (async () => {
