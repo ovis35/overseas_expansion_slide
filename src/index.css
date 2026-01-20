@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Print View 專用樣式 */
 .print-view {
   @apply w-full;
