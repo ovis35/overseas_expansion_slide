@@ -515,8 +515,8 @@ export const slides: SlideContent[] = [
       {
         text: '聯絡方式：',
         subBullets: [
-          'Email：contact@example.com',
-          '預約連結：[需補充調研]'
+          'Email：info@tsacra.org',
+          '歡迎透過Email預約諮詢'
         ]
       }
     ],
