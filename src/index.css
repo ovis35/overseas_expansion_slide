@@ -265,6 +265,20 @@ body {
   .slide-page li {
     font-size: 0.9rem !important;
   }
+
+  /* 列印時移除固定定位與滾動限制，避免只輸出第一頁 */
+  .print-view {
+    position: static !important;
+    inset: auto !important;
+    overflow: visible !important;
+    height: auto !important;
+    width: auto !important;
+  }
+
+  .print-view .slide-page {
+    min-height: auto !important;
+    height: auto !important;
+  }
 }
 
 /* Print View 專用樣式 */
