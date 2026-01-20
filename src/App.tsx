@@ -8,9 +8,10 @@ import SpeakerNotes from './components/SpeakerNotes';
 import KeyboardHint from './components/KeyboardHint';
 import ExportButton from './components/ExportButton';
 import PrintView from './components/PrintView';
+import PdfExport from './components/PdfExport';
 
 function App() {
-  const [isPrintMode, setIsPrintMode] = useState(false);
+  const [exportMode, setExportMode] = useState<'print' | 'pdf' | null>(null);
   const {
     currentSlide,
     goToSlide,
@@ -99,11 +100,18 @@ function App() {
       )}
 
       {/* Export Button */}
-      <ExportButton onExport={() => setIsPrintMode(true)} />
+      <ExportButton
+        onExportPdf={() => setExportMode('pdf')}
+        onPrint={() => setExportMode('print')}
+      />
 
       {/* Print View */}
-      {isPrintMode && (
-        <PrintView onClose={() => setIsPrintMode(false)} />
+      {exportMode === 'print' && (
+        <PrintView onClose={() => setExportMode(null)} />
+      )}
+
+      {exportMode === 'pdf' && (
+        <PdfExport onClose={() => setExportMode(null)} />
       )}
     </div>
   );
