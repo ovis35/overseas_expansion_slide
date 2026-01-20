@@ -289,3 +289,13 @@ body {
 .print-view .slide-page {
   @apply w-full min-h-screen;
 }
+
+.pdf-export {
+  @apply w-full;
+}
+
+.pdf-export .slide-page {
+  @apply w-full min-h-screen;
+  page-break-after: always;
+  break-after: page;
+}
