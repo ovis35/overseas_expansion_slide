@@ -12,17 +12,19 @@ export default function PdfExport({ onClose }: PdfExportProps) {
 
   useEffect(() => {
     const element = containerRef.current;
-    if (!element) {
-      return;
-    }
+    if (!element) return;
 
     const timer = window.setTimeout(() => {
       void (async () => {
         try {
+          // 可選：等字型載入完再輸出，避免字型 fallback 造成版面跳動
+          // await document.fonts?.ready;
+
           await html2pdf()
             .from(element)
             .set({
               filename: 'slides.pdf',
+              margin: 0,
               html2canvas: {
                 scale: 2,
                 useCORS: true,
@@ -30,7 +32,10 @@ export default function PdfExport({ onClose }: PdfExportProps) {
               },
               pagebreak: {
                 mode: ['css', 'legacy'],
-                avoid: '.slide-page'
+                // 盡量避免 slide 內容被切到兩頁
+                avoid: '.slide-page',
+                // 每張 slide 後換頁，但排除最後一張，避免空白頁
+                after: '.slide-page:not(:last-child)'
               },
               jsPDF: {
                 unit: 'mm',
@@ -52,8 +57,10 @@ export default function PdfExport({ onClose }: PdfExportProps) {
 
   return (
     <div className="pdf-export fixed inset-0 z-[100] bg-slate-900 overflow-auto">
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-primary-500 text-white
-                      px-6 py-3 rounded-lg shadow-lg z-[101] animate-fade-in">
+      <div
+        className="fixed top-4 left-1/2 -translate-x-1/2 bg-primary-500 text-white
+                   px-6 py-3 rounded-lg shadow-lg z-[101] animate-fade-in"
+      >
         <p className="text-sm font-medium">PDF 匯出中，請稍候...</p>
       </div>
 
@@ -71,11 +78,7 @@ export default function PdfExport({ onClose }: PdfExportProps) {
       <div ref={containerRef}>
         {slides.map((slide, index) => (
           <div key={slide.id} className="slide-page">
-            <SlideRenderer
-              slide={slide}
-              slideNumber={index + 1}
-              totalSlides={totalSlides}
-            />
+            <SlideRenderer slide={slide} slideNumber={index + 1} totalSlides={totalSlides} />
           </div>
         ))}
       </div>
