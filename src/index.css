@@ -197,16 +197,81 @@ body {
   }
 }
 
-/* Print styles */
+/* Print styles - PDF Export */
 @media print {
-  body {
-    background: white;
-    color: black;
+  /* 頁面設置 - A4 橫向 */
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
   }
 
+  /* 強制顯示背景色和圖片 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    overflow: visible !important;
+    height: auto !important;
+    background: #0f172a !important;
+  }
+
+  /* 隱藏互動 UI 元素 */
   .progress-bar,
   .keyboard-hint,
-  .speaker-notes {
-    display: none;
+  .speaker-notes,
+  .export-button,
+  .page-number,
+  [aria-label="Previous slide"],
+  [aria-label="Next slide"] {
+    display: none !important;
   }
+
+  /* 每張投影片獨立一頁 */
+  .slide-page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide-page:last-child {
+    page-break-after: auto;
+  }
+
+  /* 表格、Roadmap、卡片不分割 */
+  table,
+  .roadmap-phase,
+  .highlight-box,
+  .data-table {
+    page-break-inside: avoid;
+  }
+
+  /* 確保背景漸層顯示 */
+  .bg-gradient-to-br,
+  [class*="bg-gradient"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 調整字體大小確保可讀性 */
+  .slide-page h2 {
+    font-size: 2rem !important;
+  }
+
+  .slide-page p,
+  .slide-page li {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Print View 專用樣式 */
+.print-view {
+  @apply w-full;
+}
+
+.print-view .slide-page {
+  @apply w-full min-h-screen;
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSlideNavigation } from './hooks/useSlideNavigation';
 import { slides, totalSlides } from './data/slides';
 import SlideRenderer from './components/SlideRenderer';
@@ -5,8 +6,11 @@ import ProgressBar from './components/ProgressBar';
 import Overview from './components/Overview';
 import SpeakerNotes from './components/SpeakerNotes';
 import KeyboardHint from './components/KeyboardHint';
+import ExportButton from './components/ExportButton';
+import PrintView from './components/PrintView';
 
 function App() {
+  const [isPrintMode, setIsPrintMode] = useState(false);
   const {
     currentSlide,
     goToSlide,
@@ -41,7 +45,7 @@ function App() {
       />
 
       {/* Page Number */}
-      <div className="fixed bottom-4 right-4 text-sm text-slate-500 font-mono z-40">
+      <div className="page-number fixed bottom-4 right-4 text-sm text-slate-500 font-mono z-40">
         {currentSlide} / {totalSlides}
       </div>
 
@@ -92,6 +96,14 @@ function App() {
           notes={currentSlideData.notes}
           onClose={toggleNotes}
         />
+      )}
+
+      {/* Export Button */}
+      <ExportButton onExport={() => setIsPrintMode(true)} />
+
+      {/* Print View */}
+      {isPrintMode && (
+        <PrintView onClose={() => setIsPrintMode(false)} />
       )}
     </div>
   );
